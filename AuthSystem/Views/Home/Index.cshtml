@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using AuthSystem.Areas.Identity.Data
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+
+<div class="text-center">
+    @using (Html.BeginForm("Submit", "Home", FormMethod.Post))
+    {
+        <div class="btn-group col-md-auto offset-md-12" role="group" aria-label="Basic example">
+            <button class="btn btn-secondary btn-icon" type="submit" value="Delete" name="action">
+                <span class="icon"><i class="fa-solid fa-skull-crossbones"></i></span> Delete
+            </button>
+            <button class="btn btn-secondary btn-icon" type="submit" value="Block" name="action">
+                <span class="icon"><i class="fa-solid fa-heart-circle-xmark"></i></span> Block
+            </button>
+            <button class="btn btn-secondary btn-icon" type="submit" value="Unblock" name="action">
+                <span class="icon"><i class="fa-solid fa-heart-circle-check"></i></span> Unblock
+            </button>
+        </div>
+        <table class=" table table-bordered">
+            <thead>
+                <tr>
+
+                    <th>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="1" onClick="toggle(this)" name="user">
+                            <label class="custom-control-label" for="1"></label>
+                        </div>
+                        <script>
+                        function toggle(source) {
+                            checkboxes = document.getElementsByName('user');
+                            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                                checkboxes[i].checked = source.checked;
+                            }
+                        }
+                        </script>
+                    </th>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>e-mail</th>
+                    <th>Reg.Date</th>
+                    <th>Visit Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            @foreach (var user in UserManager.Users.ToList())
+            {
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" value="@user.Id" id="@user.Id" name="user">
+                                <label class="custom-control-label" for="@user.Id"></label>
+                            </div>
+
+                        </td>
+                        <td>@user.Id</td>
+                        <td>@user.FirstName</td>
+                        <td>@user.LastName</td>
+                        <td>@user.Email</td>
+                        <td>@user.RegDate.ToString("d")</td>
+                        <td>@user.VisitDate.ToString("d")</td>
+                        <td>@user.Status</td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    }
+</div>
